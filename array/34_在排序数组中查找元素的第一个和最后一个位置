@@ -1,0 +1,54 @@
+/*
+    算法思想1：首先使用二分法确定任意一个相同值位置，从相同值依次向前向后顺序检索，寻找到最大最小索引
+              注意对于特殊值——空的情况讨论
+    算法思想2：直接利用二分法求左右边界，分情况讨论后根据左右边界值的关系确定结果
+*/
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if (nums.size() == 0) {
+            return vector<int> {-1, -1};
+        }
+        vector<int> ending;
+        int low = 0;
+        int high = nums.size() - 1;
+        int one = -1; 
+        int first, last;
+        while (low <= high) { // 二分法寻找一个目标值，无论位置
+            int mid = (low+high) / 2;
+            if (nums[mid] == target) {
+                one = mid;
+                break;
+            }
+            else if (nums[mid] > target) {
+                high = mid - 1;
+            }
+            else {
+                low = mid + 1;
+            }
+        }
+        if (one == -1) {
+            ending.push_back(-1);
+            ending.push_back(-1);
+        }
+        else {
+            // 寻找最大值
+            first = one;
+            while (first >= 0) {
+                if (nums[first] != target)
+                    break;
+                first--;
+            }
+            ending.push_back(first+1);
+            // 寻找最小值
+            last = one;
+            while (last <= nums.size()-1) {
+                if (nums[last] != target) 
+                    break;
+                last++;
+            }
+            ending.push_back(last-1);
+        }
+        return ending;
+    }
+};
