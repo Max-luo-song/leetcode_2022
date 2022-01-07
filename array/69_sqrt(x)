@@ -1,0 +1,23 @@
+/*
+    算法思想：二分法，当出现中间值的平方小于等于目标值，且加一大于目标值时则结束
+*/
+class Solution {
+public:
+    int mySqrt(int x) {
+        int low = 0;
+        int high = x;
+        int mid = -1;
+        while (low <= high) {
+            mid = (low + high) / 2;
+            // 对于退出式要加限制，出现下一个大于才能退出
+            if ((long long)mid*mid <= x && (long long)(mid+1)*(mid+1) > x)
+                break;
+            else if ((long long)mid*mid < x)
+                low = mid+1;
+            else {
+                high = mid - 1;
+            }
+        }
+        return mid;
+    }
+};
