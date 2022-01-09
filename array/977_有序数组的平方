@@ -1,0 +1,25 @@
+/*
+    算法思想：利用已知非递减排序，两边的平方一定比中间大。结合双指针法，再开一个数组，选大的依次
+            向中间填充。指针不断向中间移动，空间复杂度为O(n)，没有原地实现效果好
+*/
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        vector<int> ans(nums.size());
+        int left = 0, right = nums.size()-1;
+        int k = nums.size()-1; // 倒叙插入ans的索引
+        while (left != right) {
+            if (nums[left]*nums[left] >= nums[right]*nums[right]) {
+                ans[k] = nums[left]*nums[left];
+                left++;
+            }
+            else {
+                ans[k] = nums[right]*nums[right];
+                right--;
+            }
+            k--;
+        }
+        ans[k] = nums[left]*nums[left];
+        return ans;
+    }
+};
