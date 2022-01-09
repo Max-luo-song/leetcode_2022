@@ -1,0 +1,24 @@
+/*
+    算法思想：双指针法。要实现向前的覆盖。覆盖值应当是当前值的下一个，不同时进行覆盖，相同时fast右移
+*/
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.size() == 0) // 特殊值特殊处理
+            return 0;
+        int slowptr, fastptr;
+        for (slowptr=0,fastptr=0; fastptr<nums.size(); ) {
+            if (nums[slowptr] == nums[fastptr]) {
+                fastptr++;
+            }
+            else {
+            //    if (slowptr+1<nums.size()) {  // 可以不加，不影响
+                    nums[slowptr+1] = nums[fastptr];
+                    slowptr++;
+                    fastptr++;
+            //   }
+            }
+        }
+        return slowptr+1; // 因为覆盖值选择了slowptr+1，所以再自增是当前索引。要返回个数再嘉义
+    }
+};
