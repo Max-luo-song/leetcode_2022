@@ -1,0 +1,18 @@
+/*
+    算法思想：双指针法，规定左指针前是排好的序列，左右之间是0
+    关键在于保证左一定指向0。左右一开始相同，如果不为0，左右同时移动
+    为0时，右动保证左为0.左右永远相邻交换
+*/
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int left, right;
+        for (left=0,right=0; right<nums.size();) {
+            if (nums[right] != 0) {
+                swap(nums[left], nums[right]);
+                left++;
+            }
+            right++;
+        }
+    }
+};
