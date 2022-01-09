@@ -1,0 +1,19 @@
+/*
+    算法思想：双指针法，非目标值时向前覆盖。注意返回值和前指针的关系
+*/
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int i,j;
+        for (i=0,j=0; j<nums.size(); ) {
+            if (nums[j] != val) {
+                nums[i] = nums[j];
+                i++;
+                j++;
+            }
+            else 
+                j++;
+        }
+        return i;
+    }
+};
