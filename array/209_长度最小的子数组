@@ -1,0 +1,26 @@
+/*
+    算法思想：滑动窗口实现，确定左边界，右边界。
+*/
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int low = 0;
+        int high = 0;
+        int sum = 0;
+        int min_length = INT_MAX;
+        for (;high<nums.size();high++) {
+            sum += nums[high];
+            // 左边界不断滑动，寻找满足条件的最大长度
+            while (sum >= target) {  
+                if (high-low+1<min_length)
+                    min_length = high-low+1; 
+                sum -= nums[low];
+                low++;  
+            }
+        }
+        if (min_length == INT_MAX)
+            return 0;
+        else
+            return min_length;
+    }
+};
