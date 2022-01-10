@@ -1,0 +1,43 @@
+/*
+    算法思想：循环不变量，保证循环区间左闭右开。注意命名规范
+    1是列变行不变，行是row，列是col到col+n-offset
+    2是行变列不变，列是col+n-offset，行row到row+n-offset
+    3是列变行不变，行是row+n-offset，列是col+n-offset到col
+    4是行变列不变，列是col，行是row+n-offset到row
+    每次row加1，offset要减去2，才进入下一圈
+*/
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<int> temp(n, 0);
+        vector<vector<int>> ending(n, temp);
+        int level = n/2;
+        int row = 0, col = 0;
+        int k = 1;
+        int offset = 1;
+        for (int i=0; i<level; i++) {
+            for (int j=col; j<n+col-offset; j++) {
+                ending[row][j] = k;
+                k++;
+            }
+            for (int j=row; j<n+row-offset; j++) {
+                ending[j][n+col-offset] = k;
+                k++;
+            }
+            for (int j=n+col-offset; j>row; j--) {
+                ending[n+row-offset][j] = k;
+                k++;
+            }
+            for (int j=n+row-offset; j>row; j--) {
+                ending[j][row] = k;
+                k++;
+            }
+            col++;
+            row++;
+            offset += 2;
+        }
+        if (n%2 == 1)
+            ending[row][col] = n*n;
+        return ending;
+    }
+};
