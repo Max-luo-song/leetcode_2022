@@ -4,7 +4,7 @@
     ListNode *next;
     int val;
     // 可以直接加入构造函数：
-    ListNode(int x):val(x), next(NULL);
+    ListNode(int x):val(x), next(NULL) {};
   }
 */
 class MyLinkedList {
