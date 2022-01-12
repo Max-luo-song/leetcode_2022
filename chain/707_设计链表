@@ -1,0 +1,97 @@
+/*
+  关于基本操作不再赘述，主要是关于链表节点的定义：
+  struct ListNode {
+    ListNode *next;
+    int val;
+    // 可以直接加入构造函数：
+    ListNode(int x):val(x), next(NULL);
+  }
+*/
+class MyLinkedList {
+private:
+    ListNode *head;
+    int size;
+public:
+    MyLinkedList() {
+        head = new ListNode(0);
+        head->next = NULL;
+        size = 0;
+    }
+    
+    int get(int index) {
+        if (index < 0 || index > this->size)
+            return -1;
+        ListNode *p = this->head->next;
+        int count = 0;
+        while (p != NULL) {
+            if (index == count)
+                return p->val;
+            p = p->next;
+            count++;
+        }
+        return -1;
+    }
+    
+    void addAtHead(int val) {
+        ListNode *p = new ListNode(val);
+        p->next = this->head->next;
+        this->head->next = p;
+        this->size++;
+    }
+    
+    void addAtTail(int val) {
+        ListNode *p = new ListNode(val);
+        ListNode *mv = this->head;
+        while (mv->next != NULL) {
+            mv = mv->next;
+        }
+        mv->next = p;
+        this->size++;
+    }
+    
+    void addAtIndex(int index, int val) {
+        if (index == this->size)
+            addAtTail(val);
+        else if (index < 0) 
+            addAtHead(val);
+        else if (index > this->size)
+            return ;
+        else {
+            int count = 0;
+            ListNode *p = new ListNode(val);
+            ListNode *mv = this->head;
+            while (count < index) {
+                mv = mv->next;
+                count++;
+            }
+            p->next = mv->next;
+            mv->next = p;
+            this->size++;
+        }
+    }
+    
+    void deleteAtIndex(int index) {
+        if (index>=0 && index<this->size) {
+            int count = 0;
+            ListNode *mv = this->head;
+            while (count < index) {
+                mv = mv->next;
+                count++;
+            }
+            ListNode *temp = mv->next;
+            mv->next = temp->next;
+            delete temp;
+            this->size--;
+        }
+    }
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
