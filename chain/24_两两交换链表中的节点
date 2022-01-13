@@ -1,0 +1,38 @@
+/*
+    算法思想：本题就是对于指针操作过程的模拟，分两个步骤：交换以及更新指针
+    需要注意是每次操作隔2个，里面涉及next->next，要对NULL有判断。到NULL了说明到最后
+    跳出即可，同时要设计虚拟头节点
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode *temp_head = new ListNode(0);
+        temp_head->next = head;
+        ListNode *fast = head;
+        ListNode *slow = temp_head;
+        while (fast != NULL) {
+            ListNode *p = fast->next;
+            if (p == NULL)
+                break;
+            fast->next = p->next;
+            slow->next = p;
+            p->next = fast;
+            slow = fast;
+            fast = fast->next;
+            if (fast == NULL)
+                break;
+            p = fast->next;
+        }
+        return temp_head->next;
+    }
+};
