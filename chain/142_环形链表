@@ -1,0 +1,35 @@
+/*
+    算法思想：本题分为两步：1.确定是否有环 2.确定环的交点
+    1.确定有环 使用快慢指针，快指针每次移动2个，慢指针每次移动1个，如果有环一定相遇
+    2.确定环的交点，利用数学表达式计算出交点在起始点与快慢相遇点的共同交点
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode *fast = head;
+        ListNode *slow = head;
+        ListNode *meet;
+        while (fast != NULL && fast->next != NULL) {
+            fast = fast->next->next;
+            slow = slow->next;
+            if (fast == slow) { // 快慢指针相遇，存在环路
+                ListNode *index1 = fast;
+                ListNode *index2 = head;
+                while (index1 != index2) {
+                    index1 = index1->next;
+                    index2 = index2->next;
+                }
+                return index2;
+            }       
+        }
+        return NULL;
+    }
+};
