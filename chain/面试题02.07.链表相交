@@ -1,0 +1,51 @@
+/*
+    算法思想：双指针，利用链表长度之差n，让长的先移动n，后面同步移动，最终可以得到结果
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int length_A = 0;
+        int length_B = 0;
+        ListNode *move_A = headA;
+        ListNode *move_B = headB;
+        while (move_A != NULL) {
+            length_A++;
+            move_A = move_A->next;
+        }
+        while (move_B != NULL) {
+            length_B++;
+            move_B = move_B->next;
+        }
+        int count;
+        move_A = headA;
+        move_B = headB;
+        if (length_A > length_B) {
+            count = length_A-length_B;
+            while (count--) {
+                move_A = move_A->next;
+            }
+        }
+        else {
+            count = length_B-length_A;
+            while (count--) {
+                move_B = move_B->next;
+            }
+        }
+        while (move_A != NULL) {
+            if (move_A == move_B) {
+                return move_A;
+            }
+            move_A = move_A->next;
+            move_B = move_B->next;
+        }
+        return NULL;
+    }
+};
