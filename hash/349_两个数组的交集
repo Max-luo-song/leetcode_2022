@@ -1,0 +1,25 @@
+/*
+    算法思想：因为数字无上限，所以使用set做统计。本题使用了两个set，是为了避免num2遍历的时候重复的导入。利用set中不重复的特点
+*/
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> ending;
+        set<int> s;
+        set<int> t;
+        for (int i=0; i<nums1.size(); i++) {
+            s.insert(nums1[i]);
+        }
+        for (int i=0; i<nums2.size(); i++) {
+            if (s.find(nums2[i]) != s.end()) {
+                t.insert(nums2[i]);
+            }
+        }
+        // set指针的用法如下，注意迭代器的定义方式，以及迭代器的取值是*it
+        set<int>::iterator it;
+        for (it=t.begin(); it!=t.end(); it++) {
+            ending.push_back(*it);
+        }
+        return ending;
+    }
+};
