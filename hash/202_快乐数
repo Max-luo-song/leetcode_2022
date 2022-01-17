@@ -1,0 +1,30 @@
+/*
+    算法思想：根据快乐数的定义，只有出现结果为1的才认定为快乐数。本题难点在于如何判断失败的快乐数。当循环出现相同的非快乐数时，数字陷入死循环。就是非快乐数。所以使用set来判断
+*/
+class Solution {
+public:
+    int getN(int n) {
+        int t = 0;
+        while (n != 0) {
+            int temp = n%10;
+            n = n/10;
+            t += temp*temp;
+        }
+        return t;
+    }
+    bool isHappy(int n) {
+        unordered_set<int> s;
+        while (1) {
+            n = getN(n);
+            if (n == 1)
+                return true;
+            else {
+                if (s.find(n) == s.end())
+                    s.insert(n);
+                else
+                    return false;
+            }
+        }
+        return false;
+    }
+};
