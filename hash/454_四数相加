@@ -1,0 +1,26 @@
+/*
+    算法思想：对应于两数相加，使用map。分为两组，和为0另一组为相反数。首先统计左半部分的可能性确定map
+             以和为key，以出现次数为value。右边的出现和值为-key的就是满足条件的。不是++，左边可能很
+             多种，前面已经进行了统计
+*/
+class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        int count = 0;
+        unordered_map<int, int> maps;
+        // 前半部分
+        for (int i=0; i<nums1.size(); i++) {
+            for (int j=0; j<nums2.size(); j++) {
+                maps[nums1[i]+nums2[j]]++;
+            }
+        }
+        // 后半部分
+        for (int i=0; i<nums3.size(); i++) {
+            for (int j=0; j<nums4.size(); j++) {
+                if (maps.find(-(nums3[i]+nums4[j])) != maps.end())
+                    count += maps[-(nums3[i]+nums4[j])];
+            }
+        }
+        return count;
+    }
+};
