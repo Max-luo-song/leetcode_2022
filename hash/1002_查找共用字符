@@ -1,0 +1,34 @@
+/*
+    算法思想：本题通过有限的字母个数判断相同个数，锁定为哈希表题目。基本思路为先统计，再确定共有字母的最小个数，再向其中进行填充
+*/
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) {
+        vector<string> ending;
+        if (words.size() == 0)
+            return ending;
+        int hash[26] = {0}; // 存储其中的最小值
+        // 使用第一个作为初始化
+        for (int i=0; i<words[0].length(); i++) {
+            hash[words[0][i]-'a']++;
+        }
+        // 获取字符串字符个数，以及各重复字符最小数值。存储于hash中
+        for (int i=1; i<words.size(); i++) {
+            int hashstr[26] = {0};
+            for (int j=0; j<words[i].length(); j++) {
+                hashstr[words[i][j]-'a']++;
+            }
+            for (int j=0; j<26; j++) {
+                hash[j] = min(hash[j], hashstr[j]);
+            }
+        }
+        for (int i=0; i<26; i++) {
+            while (hash[i] != 0) {
+                string s(1, i+'a');
+                ending.push_back(s);
+                hash[i]--;
+            }
+        }
+        return ending;
+    }
+};
