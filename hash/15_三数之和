@@ -1,0 +1,40 @@
+/*
+    算法思想：本题可以仿照两数之和和四数之和，利用map完成。但是本题要求不重复，用map还要进行去重
+             另一种方法是使用双指针，首先进行排序。num[i]为基准，设定nums[left]和nums[right]，一
+             小一大，和小于0变大动left，和大于0变小动right。满足输出。另外注意要去重。对于nums[i]
+             和nums[left],nums[right]都要去重
+*/
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> result;
+        sort(nums.begin(), nums.end());
+
+        for (int i=0; i<nums.size(); i++) {
+            if (nums[i] > 0) // 最小值大于0，整体大于0，已经排序
+                continue;
+            // 对第一个进行去重
+            if (i>0 && nums[i]==nums[i-1])
+                continue;
+            int left = i+1;
+            int right = nums.size()-1;
+            while (left < right) {
+                if (nums[i]+nums[left]+nums[right] < 0)
+                    left++;
+                else if (nums[i]+nums[left]+nums[right] > 0)
+                    right--;
+                else {
+                    result.push_back(vector<int>{nums[i],nums[left],nums[right]});
+                    while (left<right && nums[left] == nums[left+1]) // 去重，指向最后一个相同的
+                        left++;
+                    while (left<right && nums[right] == nums[right-1]) // 去重，指向最后一个相同的
+                        right--;
+                    // 还是相同的，要移动
+                    left++;
+                    right--;
+                }
+            }  
+        }
+        return result;
+    }
+};
