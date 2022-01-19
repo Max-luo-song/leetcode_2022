@@ -1,0 +1,31 @@
+/*
+    算法思想：本题思想为先整体倒过来，再去除空格并将单词倒过来。使用原数组O(1)的空间
+            可以先去除空格，也可以边去除空格边倒过来。本题选择后者。
+*/
+class Solution {
+public:
+    string reverseWords(string s) {
+        reverse(s.begin(), s.end());
+        int t = 0;
+        for (int i=0; i<s.length(); i++) {
+            if (s[i] != ' ') {
+                int p = t;
+                while (s[i] != ' ' && i<s.length()) {
+                    s[t++] = s[i++];
+                }
+                reverse(s.begin()+p, s.begin()+t);
+                if (i<s.length())
+                    s[t++] = ' ';
+            }
+        }
+        // 进行特殊处理，主要针对最后还有空格残留
+        for (int i=t-1; i>=0; i--) {
+            if (s[i] == ' ')
+                t--;
+            else 
+                break;
+        }
+        s.resize(t);
+        return s;
+    }
+};
