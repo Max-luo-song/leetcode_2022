@@ -1,0 +1,26 @@
+/*
+    算法思想：本题的思想比较简单，先统计空格数量。再移位做扩充，保证从后往前就可以
+*/
+class Solution {
+public:
+    string replaceSpace(string s) {
+        int count = 0;
+        for (int i=0; i<s.length(); i++) {
+            if (s[i] == ' ')
+                count++;
+        }
+        string t(s.length()+2*count, ' '); // 也可以使用resize()在原有数组上做扩充
+        int k = t.length()-1;
+        for (int i=s.length()-1; i>=0; i--) {
+            if (s[i] != ' ') {
+                t[k--] = s[i];
+            }
+            else {
+                t[k--] = '0';
+                t[k--] = '2';
+                t[k--] = '%';
+            }
+        }
+        return t;
+    }
+};
