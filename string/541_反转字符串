@@ -1,0 +1,20 @@
+/*
+    算法思想：本题是一道模拟题，分为三种情况进行模拟。增长区间设定为2k比较简便，另外反转的实现可以使用reverse帮助，加上迭代器。不要自己写reverse了，边界混乱
+*/
+class Solution {
+public:
+    string reverseStr(string s, int k) {
+        for (int i=0; i<s.size(); i+=(2*k)) {
+            if (i+2*k < s.size()) { // >2k
+                reverse(s.begin()+i, s.begin()+i+k);
+            }
+            else if (i+2*k>=s.size() && i+k<s.size()) { // <2k && >k
+                 reverse(s.begin()+i, s.begin()+i+k);
+            }
+            else { // <k
+                reverse(s.begin()+i, s.end());
+            }
+        }
+        return s;
+    }
+};
