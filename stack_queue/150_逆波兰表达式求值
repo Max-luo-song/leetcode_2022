@@ -1,0 +1,26 @@
+/*
+    算法思想：本题主要考察用栈模拟后缀表达式的计算。计算规则为数字直接入栈，有字符直接取两个数字计算再入栈。合法字符保证，又符号时数字一定满足条件。
+    另外调用stoi()作用是把string直接转成int型
+*/
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> s;
+        for (int i=0; i<tokens.size(); i++) {
+            if (tokens[i] == "+" || tokens[i] == "-" || tokens[i] == "*" || tokens[i] == "/") {
+                int num1 = s.top();
+                s.pop();
+                int num2 = s.top();
+                s.pop();
+                if (tokens[i] == "+") s.push(num1+num2);
+                else if (tokens[i] == "-") s.push(num2-num1);
+                else if (tokens[i] == "*") s.push(num1*num2);
+                else s.push(num2/num1);
+            }
+            else {
+                s.push(stoi(tokens[i]));
+            }
+        }
+        return s.top();
+    }
+};
