@@ -1,0 +1,52 @@
+/*
+    算法思想：匹配问题是栈的经典问题，本题是字符串的匹配，设计三类。主要注意下可能存在一种情况是栈中为空，来的字符属于右边，此时取top()是内存溢出的，所以每次都要对empty进行下判断
+*/
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> s1;
+        for (int i=0; i<s.length(); i++) {
+            if (s[i] == '(' || s[i] == '[' || s[i] == '{') {
+                s1.push(s[i]);
+            }
+            else if (s[i] == '}') {
+                if (s1.empty())  // 判断empty()
+                    return false;
+                char temp = s1.top();
+                if (temp == '{') {
+                    s1.pop();
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (s[i] == ']') {
+                if (s1.empty())
+                    return false;
+                char temp = s1.top();
+                if (temp == '[') {
+                    s1.pop();
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (s[i] == ')') {
+                if (s1.empty())
+                    return false;
+                char temp = s1.top();
+                if (temp == '(') {
+                    s1.pop();
+                }
+                else {
+                    return false;
+                }
+            }
+        } 
+        if (s1.empty())
+            return true;
+        else 
+            return false;
+    }
+
+};
