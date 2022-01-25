@@ -1,0 +1,50 @@
+/*
+    算法思想：本题关键在于确定每一个窗口内的最大值，如果使用暴力的方法会超时。所以需要想一种方法来维护当前最大值，并在O(n)的复杂度上完成。本题选择维护单调队列，保证队列从大到小排序，每次选取最左边输出。要解决两个问题，单调队列的增删。
+    对于增，要从后往前将要增的数字放于队列合适的地方
+    对于删，判断要删除元素是否是第一个
+    底层实现使用deque实现，具体操作就是改动前后元素，注意class的声明是在类内
+*/
+class Solution {
+private:
+    class MyQueue {
+    public:
+        deque<int> d;
+        MyQueue() {
+            
+        }
+        // 删除元素
+        void pop(int value) {
+            if (!d.empty() && d.front() == value) {
+                d.pop_front();
+            }
+        }
+        // 增加元素
+        void push(int value) {
+            while (!d.empty() && d.back() < value) {
+                d.pop_back();
+            }
+            d.push_back(value);
+        }
+        // 获得最大值
+        int get_max() {
+            return d.front();
+        }
+    };
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> ending;
+        MyQueue myqueue;
+        int i;
+        // 直接往里放即可
+        for (i=0; i<k; i++) {
+            myqueue.push(nums[i]);
+        }
+        ending.push_back(myqueue.get_max());
+        for (; i<nums.size(); i++) {
+            myqueue.pop(nums[i-k]);
+            myqueue.push(nums[i]);
+            ending.push_back(myqueue.get_max());
+        }
+        return ending;
+    }
+};
