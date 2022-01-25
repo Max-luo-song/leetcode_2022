@@ -1,0 +1,36 @@
+/*
+    算法思想：本题可分为三步，统计频次→频次排序→选出K高
+    统计频次用map完成，对于频次排序，排序算法操作的是vector。于是使用优先级队列完成排序。最后保证优先级队列中有K个就满足条件。优先级队列有两种方式：大顶堆/小顶堆。本题选择小的原因是：大顶堆在更新的时候弹出最大的没法把最大的K个留下来，选择小顶堆，保持最终有K个就是最大的，
+    本题要注意思想，也要注意优先级队列的实现模板
+*/
+class Solution {
+public:
+    // 定义优先级队列固定格式，写类，小顶堆实现
+    class mycomparison {
+        public:
+            bool operator()(const pair<int,int>& lhs, const pair<int,int>& rhs) {
+                return lhs.second > rhs.second;
+            }
+    }; // 注意此处有分号
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        // 出现频次统计，要用map<int,int>
+        unordered_map<int, int> map;
+        for (int i=0; i<nums.size(); i++) {
+            map[nums[i]]++;
+        }
+        // 优先级队列声明，模板，声明小顶堆
+        priority_queue<pair<int, int>, vector<pair<int, int>>, mycomparison> pri_que;
+        for (unordered_map<int,int>::iterator it=map.begin(); it !=map.end(); it++) {
+            pri_que.push(*it);
+            if (pri_que.size() > k) {
+                pri_que.pop();
+            }
+        }
+        vector<int> ending;
+        while (!pri_que.empty()) {
+            ending.push_back(pri_que.top().first);
+            pri_que.pop();
+        }
+        return ending;
+    }
+};
