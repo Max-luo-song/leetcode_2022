@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+ /*
+    算法思想1：使用迭代法完成，注意左叶子节点的定义。不是左节点。本题使用迭代的前序遍历方法，在变换左节点时做了一个判断，即判断是不是左叶子节点
+ */
+/*
+class Solution {
+public:
+    int sumOfLeftLeaves(TreeNode* root) {
+        int sum = 0;
+        if (root == NULL)
+            return sum;
+        stack<TreeNode *>st;
+        TreeNode *p = root;
+        while (!st.empty() || p != NULL) {
+            if (p != NULL) {
+                st.push(p);
+                p = p->left;
+                if (p != NULL && p->left == NULL && p->right == NULL)
+                    sum += p->val;
+            }
+            else {
+                p = st.top();
+                st.pop();
+                p = p->right;
+            }
+        }
+        return sum;
+    }
+};*/
+/*
+    算法思想2：递归法完成。确定返回条件NULL为0，因为要利用父节点，所以要用后序遍历。
+    递归逻辑，就是判断当前节点的左节点是不是左叶子节点。返回值就是和
+*/
+class Solution {
+public:
+    int sumOfLeftLeaves(TreeNode* root) {
+        if (root == NULL)
+            return 0;
+        int left_sum = sumOfLeftLeaves(root->left); // 左
+        int right_sum = sumOfLeftLeaves(root->right); // 右
+        // 中
+        int mid = 0;
+        if (root->left != NULL && root->left->left == NULL && root->left->right == NULL)
+            mid = root->left->val;
+        return mid+left_sum+right_sum;
+    }
+};
