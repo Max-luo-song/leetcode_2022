@@ -1,0 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    算法思想：整体回溯思想，有返回值。用深度优先遍历，确定两个停止条件，叶子节点且和返回1，叶子节点且不和返回0
+*/
+/*
+class Solution {
+public:
+    bool traverse(TreeNode *root, int count) {
+        if (root->left == NULL && root->right == NULL && count == 0) {
+            return true;
+        }
+        if (root->left == NULL && root->right == NULL)
+            return false;
+        // 此处不能直接写return traverse()，因为左不行还要尝试右边
+        if (root->left) {
+            if (traverse(root->left, count-root->left->val))
+                return true;
+        }
+        if (root->right) {
+            if (traverse(root->right, count-root->right->val))
+                return true;
+        }
+        return false;
+    }
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if (root == NULL)
+            return false;
+        return traverse(root, targetSum-root->val);
+    }
+};*/
+
+/*
+    算法思想2：深度优先搜索，利用栈完成前序遍历。要保存和值，利用pair栈
+    前序遍历方法使用之前那种不好分辨，使用这种中右左依次入栈
+*/
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if (root == NULL)
+            return false;
+        stack<pair<TreeNode *, int>> st;
+        TreeNode *p = root;
+        st.push(pair<TreeNode *, int>(p, p->val));
+        while (!st.empty()) {
+            pair<TreeNode *, int> node = st.top();
+            st.pop();
+            if (node.first->left == NULL && node.first->right == NULL && node.second == targetSum)
+                return true;
+            if (node.first->right)
+                st.push(pair<TreeNode *, int>(node.first->right, node.second+node.first->right->val));
+            if (node.first->left)
+                st.push(pair<TreeNode *, int>(node.first->left, node.second+node.first->left->val));
+        }
+        return false;
+    }
+};
