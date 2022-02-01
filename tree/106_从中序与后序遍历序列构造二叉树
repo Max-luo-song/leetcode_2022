@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    算法思想：模拟中序和后序手动构造。整体是一个递归过程。步骤如下：
+    1.确定后序最后一个为根
+    2、根据根值划分中序队列，中序左侧为左子树，右侧为右子树
+    3.根据已经划分好的中序队列，再划分后序遍历中的左右部分(划分后序遍历的左右部分利用后序与中序的个数相同)
+    4.递归进行
+*/
+class Solution {
+public:
+    // 在原有数组基础上修改，传入引用。应当传递的是两个数组的索引编号
+    TreeNode* traverse(vector<int>& inorder, int inorder_begin, int inorder_end, vector<int>& postorder, int postorder_begin, int postorder_end) {
+        if (inorder_begin == inorder_end) // 代表没有元素，返回NULL
+            return NULL;
+        TreeNode *root = new TreeNode();
+        root->val = postorder[postorder_end-1];
+        if (postorder_end-postorder_begin == 1) // 只有一个说明是叶子节点，且没有左右
+            return root;
+        int root_index;
+        for (root_index=inorder_begin; root_index<inorder_end; root_index++) {
+            if (inorder[root_index] == postorder[postorder_end-1])
+                break;
+        }
+        int inorder_left_begin = inorder_begin;
+        int inorder_left_end = root_index;
+        int inorder_right_begin = root_index+1;
+        int inorder_right_end = inorder_end;
+
+        int postorder_left_begin = postorder_begin;
+        int postorder_left_end = postorder_begin+inorder_left_end-inorder_left_begin;
+        int postorder_right_begin = postorder_left_end;
+        int postorder_right_end = postorder_end-1;
+
+        TreeNode *root_left = traverse(inorder, inorder_left_begin, inorder_left_end, postorder, postorder_left_begin, postorder_left_end);
+        TreeNode *root_right = traverse(inorder, inorder_right_begin, inorder_right_end, postorder, postorder_right_begin, postorder_right_end);
+        root->left = root_left;
+        root->right = root_right;
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if (inorder.size()==0 || postorder.size()==0)
+            return NULL;
+        return traverse(inorder, 0, inorder.size(), postorder, 0, postorder.size());
+    }
+};
