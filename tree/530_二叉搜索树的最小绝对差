@@ -1,0 +1,88 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    算法思想：利用二叉搜索树有序，判断有序数组上做判断
+*/
+/*
+class Solution {
+public:
+    vector<int> vec;
+    void traverse(TreeNode *root) {
+        if (root != NULL) {
+            traverse(root->left);
+            vec.push_back(root->val);
+            traverse(root->right);
+        }
+    }
+    int getMinimumDifference(TreeNode* root) {
+        traverse(root);
+        int min = INT_MAX;
+        for (int i=0; i<vec.size()-1; i++) {
+            if (vec[i+1]-vec[i] < min)
+                min = vec[i+1]-vec[i];
+        }
+        return min;
+    }
+};*/
+
+/*
+    算法思想2：利用遍历时双指针，cur和pre(指向父节点)。遍历方法还是中序遍历，这样相邻的递增有序
+*/
+/*
+class Solution {
+private:
+    int result = INT_MAX;
+    TreeNode *pre;
+    void traverse(TreeNode *cur) {
+        if (cur == NULL)
+            return ;
+        traverse(cur->left); // 左
+        if (pre != NULL) // 中
+            result = min(result, cur->val-pre->val);
+        pre = cur; //记录前一个
+        traverse(cur->right); // 右
+    }
+public:
+    int getMinimumDifference(TreeNode* root) {
+        traverse(root);
+        return result;
+    }
+};*/
+
+/*
+    算法思想3：利用迭代法+双指针完成
+*/
+class Solution {
+public:
+    int result = INT_MAX;
+    int getMinimumDifference(TreeNode* root) {
+        TreeNode *cur = root;
+        TreeNode *pre = NULL;
+        stack<TreeNode *> st;
+        while (!st.empty() || cur != NULL) {
+            if (cur != NULL) {
+                st.push(cur);
+                cur = cur->left;
+            }
+            else {
+                // 中序遍历，直接操作else，更新result也在这里
+                cur = st.top();
+                st.pop();
+                if (pre != NULL)
+                    result = min(result, cur->val-pre->val);
+                pre = cur;
+                cur = cur->right;
+            }
+        }
+        return result;
+    }
+};
