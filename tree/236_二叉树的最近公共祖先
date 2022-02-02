@@ -1,0 +1,30 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+/*
+    算法思想：要深度最大，是从下往上遍历。也就是后序遍历。为了保障深度最深，p,q一定分别位于左右
+            递归认为，左节点不为NULL则q/p有一个在左子树中。同理右子树
+*/
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == p || root == q || root == NULL)
+            return root;
+        TreeNode *left = lowestCommonAncestor(root->left, p, q);
+        TreeNode *right = lowestCommonAncestor(root->right, p, q);
+        if (left != NULL && right != NULL) // 左右都不空，说明pq出现在左右中
+            return root; 
+        else if (left != NULL && right == NULL) // 注意这里的判断，左不空右空则一定出现在左中再继续向下递归判断
+            return left;
+        else if (left == NULL && right != NULL) 
+            return right;
+        else 
+            return NULL;
+    }
+};
