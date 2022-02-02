@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    算法思想：利用二叉搜索树的特性，根据大小值递归进行处理
+*/
+/*
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        if (root == NULL)
+            return NULL;
+        if (root->val == val)
+            return root;
+        if (root->val > val) {
+            return searchBST(root->left, val);
+        }
+        else {
+            return searchBST(root->right, val);
+        }
+    }
+};*/
+/*
+    算法思想：迭代法，根据队列一层层遍历。其实也可以不用队列，利用root值不为NULL不断循环
+*/
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        if (root == NULL)
+            return root;
+        queue<TreeNode *> que;
+        que.push(root);
+        while (!que.empty()) {
+            TreeNode *p = que.front();
+            que.pop();
+            if (p == NULL)
+                return NULL;
+            if (p->val == val)
+                return p;
+            else if (p->val > val) {
+                que.push(p->left);
+            }
+            else {
+                que.push(p->right);
+            } 
+        }
+        return NULL;
+    }
+};
