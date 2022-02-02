@@ -1,0 +1,46 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    算法思想：整体思想和回溯类似。与构造二叉树结构类似。之前寻找根节点，这次寻找最大值。再左右递归实现
+             使用前序遍历，先构造中再构造左右
+             注意类似用数组构造二叉树的题目，每次分隔尽量不要定义新的数组，而是通过下标索引直接在原数组上操作，这样可以节约时间和空间上的开销
+*/
+class Solution {
+public:
+    TreeNode *traverse(vector<int> nums, int begin, int end) {
+        if (begin == end)
+            return NULL;
+        int max_index = -1;
+        int max_data = INT_MIN;
+        // 寻找最大索引
+        for (int i=begin; i<end; i++) {
+            if (nums[i] > max_data) {
+                max_index = i;
+                max_data = nums[i];
+            }
+        }
+        // 递归实现
+        TreeNode *root = new TreeNode(max_data);
+        if (end-begin == 1)
+            return root;
+        TreeNode *root_left = traverse(nums, begin, max_index);
+        TreeNode *root_right = traverse(nums, max_index+1, end);
+        root->left = root_left;
+        root->right = root_right;
+        return root;
+    }
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        if (nums.size() == 0)
+            return NULL;
+        return traverse(nums, 0, nums.size());
+    }
+};
