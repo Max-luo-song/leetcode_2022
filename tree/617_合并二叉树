@@ -1,0 +1,68 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    算法思想：递归法，递归逻辑是合成左右子树。确定返回条件是其中一个为NULL，单层逻辑按前中后遍历均可，把合成的左子树作为左子树，合成的右子树变成右子树。在root1原地做改动
+*/
+/*
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if (root1 == NULL)
+            return root2;
+        if (root2 == NULL)
+            return root1;
+        root1->val += root2->val;
+        root1->left = mergeTrees(root1->left, root2->left);
+        root1->right = mergeTrees(root1->right, root2->right);
+        return root1;
+    }
+};*/
+/*
+    算法思想：对于迭代法，要同时操作两棵树(类似于判断两棵树是否对称)固定使用层次遍历处理，本题还是在root1上做改动。对本节点进行处理，再对本节点的左右节点进行处理
+*/
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if (root1 == NULL)
+            return root2;
+        if (root2 == NULL)
+            return root1;
+        queue<TreeNode *> que;
+        que.push(root1);
+        que.push(root2);
+        while(!que.empty()) {
+            TreeNode *node1 = que.front();
+            que.pop();
+            TreeNode *node2 = que.front();
+            que.pop();
+            node1->val += node2->val;
+            // 均不为空，导入，下轮进行融合
+            if (node1->left != NULL && node2->left != NULL) {
+                que.push(node1->left);
+                que.push(node2->left);
+            }
+            // 均不为空，导入，下轮进行融合
+            if (node1->right != NULL && node2->right != NULL) {
+                que.push(node1->right);
+                que.push(node2->right);
+            }
+            // 一个为空，把node2赋值给node1
+            if (node1->left == NULL && node2->left != NULL) {
+                node1->left = node2->left;
+            }
+            if (node1->right == NULL && node2->right != NULL) {
+                node1->right = node2->right;
+            }
+        }
+        return root1;
+    }
+};
