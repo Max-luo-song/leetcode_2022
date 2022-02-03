@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    算法思想：首先理解累加树含义：树中比自己大+自身值的和(右子树+父母那边)
+    利用二叉搜索树中序遍历有序，两次中序遍历，第一次统计值，第二次修改值
+
+    算法思想2：利用右中左得到的就是逆序，逆序不断累加前面的值即可
+*/
+/*
+class Solution {
+public:
+    vector<int> temp;
+    int sum = 0;
+    void traverse(TreeNode *root) {
+        if (root != NULL) {
+            traverse(root->left);
+            temp.push_back(root->val);
+            traverse(root->right);
+        }
+    }
+    void change(TreeNode *root) {
+        if (root != NULL) {
+            change(root->left);
+            int temp_data = root->val;
+            root->val = sum;
+            sum -= temp_data;
+            change(root->right);
+        }
+    }
+    TreeNode* convertBST(TreeNode* root) {
+        traverse(root);
+        for (int i=0; i<temp.size(); i++) {
+            sum += temp[i];
+        }
+        change(root);
+        return root;
+    }
+};*/
+class Solution {
+public:
+    int pre = 0;
+    void traverse(TreeNode *root) {
+        if (root != NULL) {
+            traverse(root->right); //右
+            root->val += pre; // 中
+            pre = root->val;
+            traverse(root->left); // 左
+        }
+    }
+    TreeNode* convertBST(TreeNode* root) {
+        traverse(root);
+        return root;
+    }
+};
