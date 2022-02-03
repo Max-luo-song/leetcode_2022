@@ -1,0 +1,80 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+/*
+    算法思想：直接求二叉树的最近公共祖先，没有利用二叉搜索的特性
+*/
+/*
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == p || root == q || root == NULL)
+            return root;
+        TreeNode *left = lowestCommonAncestor(root->left, p, q);
+        TreeNode *right = lowestCommonAncestor(root->right, p, q);
+        if (left != NULL && right != NULL)
+            return root;
+        else if (left != NULL && right == NULL)
+            return left;
+        else if (right != NULL && left == NULL)
+            return right;
+        else
+            return NULL;
+        
+    }
+};*/
+/*
+    算法思想2：对于二叉搜索树，出现一左一右时就是值位于区间内。根据这个进行判断，使用前序遍历进行搜索
+    其实二叉搜索树的遍历也不一定全是标准的三种方法，可以用while循环
+    while (root != NULL) {
+        if (大于)
+            root = root->left;
+        else if (小于)
+            root = root->right;
+        else 
+            做逻辑处理
+    }       
+*/
+/*class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        stack<TreeNode *> st;
+        TreeNode *t = root;
+        int max_one = max(p->val, q->val);
+        int min_one = min(p->val, q->val);
+        while (!st.empty() || t != NULL) {
+            if (t != NULL) {
+                st.push(t);
+                if (t->val >= min_one && t->val<=max_one)
+                    return t;
+                t = t->left;
+            }
+            else {
+                t = st.top();
+                st.pop();
+                t = t->right;
+            }
+        }
+        return NULL;
+    }
+};*/
+/*
+    算法思想3：递归法实现，关注返回值位TreeNode*参数列表为root,p,q。按照前序遍历顺序
+*/
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root->val > p->val && root->val>q->val)
+            return lowestCommonAncestor(root->left,p,q);
+        else if (root->val<p->val && root->val<q->val)
+            return lowestCommonAncestor(root->right,p,q);
+        else
+            return root;
+    }
+};
