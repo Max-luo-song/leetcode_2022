@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+/*
+    难点：如何构造高度平衡二叉树，插入末尾后如何进行高度调整.
+    算法思想：整体是构造一颗二叉树，按照之前的思路寻找到根节点，递归构造左右即可
+    二叉搜索树直接取中值构造就是平衡的
+*/
+class Solution {
+public:
+    TreeNode* traverse(vector<int> nums, int begin, int end) {
+        if (begin == end) // 特殊处理
+            return NULL;
+        if (end-begin == 1) { // 特殊处理
+            TreeNode *root = new TreeNode(nums[begin]);
+            return root;
+        }
+        // 下面这个可能越界，有意识这么写：int mid = left + ((right - left) / 2);
+        int mid = (begin+end)/2; // 选取中间为根节点
+
+        TreeNode *root = new TreeNode(nums[mid]);
+        root->left = traverse(nums, begin, mid);
+        root->right = traverse(nums, mid+1, end);
+        return root;
+    }
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return traverse(nums, 0, nums.size());
+    }
+};
