@@ -1,0 +1,23 @@
+1.链表节点的定义方式：
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x): val(x),next(NULL);
+};
+2.在写C++删除链表节点的时候，要有手动释放内存的习惯，用delete
+3.对于删除链表节点的问题，要使用虚拟头节点，防止删除开头元素还要特殊处理的情况，详见203
+4.翻转链表，利用三指针法，核心代码如下（详见206）：
+Listnode *cur = head;
+Listnode *pre = NULL;
+while (cur != NULL) {
+	Listnode *temp = cur->next;
+	cur->next = pre;
+	pre = cur;
+	cur = temp;
+}
+return pre;
+5.连续跨越两个节点时，涉及到next->next，一定要判断next以后是否为NULL，进而再做处理
+6.删除链表的倒数第一几个节点就是双指针的应用，保持指针间间隔后同时移动指针即可。详见19
+7.两个链表相交节点问题思路是统计两个链表的长度，让长的链表先走一段。然后当两个链表指向同一个节点时就是相交节点。详见面试题02.07
+8.判断链表内是否有环方法：指定fast和slow指针。fast一次走两步，slow一次走一步。当fast为NULL是说明没有环，当slow和fast相交时，说明有环。详见142
+9.判断有环链表中哪个是环的起点方法：两个指针，一个p在链表开头，一个q在fast和slow重合节点。当pq重合时就是环的起点。详见142
