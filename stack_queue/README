@@ -1,0 +1,20 @@
+1.SGI STL中栈和队列底层默认是使用deque实现的，可以修改实现设置为vector<int>
+std::stack<int, std::vector<int> > third;  // 使用vector为底层容器的栈
+2.对称匹配类题目很适合用栈来完成，经典的就是括号的匹配，详见20
+3.删除相邻重复项想到使用栈的数据结构，成对消失。详见1047
+4.注意逆波兰式的计算方法：两个栈，碰到数字入数字栈，碰到算符从数字栈里面去两个计算再入栈。详见150
+5.stoi()可以把string类型直接转成int型
+6.确定滑动窗口最大值问题，就使用单调队列。队列维护最大值。单调队列插入删除规则是：插入时当前值大于队列最小的就删除最小的依次向前尽可能删。删除规则是当删除元素等于队列中的最大时把他删除。详见239
+7.求解前K个高频元素，使用堆(优先级队列) 不用大顶堆，用小顶堆，最后小顶堆中剩余K个就是高频元素。详见347
+定义优先级队列格式：
+// 从大到小
+bool operator()(const pair<int,int>& lhs, const pair<int,int>& rhs) {
+                return lhs.second > rhs.second;
+}
+// 从小到大
+bool operator()(const pair<int,int>& lhs, const pair<int,int>& rhs) {
+                return lhs.second < rhs.second;
+}
+priority_queue<pair<int, int>, vector<pair<int, int>>, mycomparison> pri_que;
+
+ priority_queue<int, vector<int>, greater<int> > qi2;//从小到大的优先级队列，可将greater改为less，即为从大到小
