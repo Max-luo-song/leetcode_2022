@@ -1,0 +1,34 @@
+/*
+    利用回溯模板，把终止条件换成指定值
+*/
+class Solution {
+public:
+    vector<vector<int>> ending;
+    vector<int> result;
+    int Sum() {
+        int count = 0;
+        for (int i=0; i<result.size(); i++) {
+            count += result[i];
+        }
+        return count;
+    }
+    void backtracking(int start, int n, int k) {
+        if (Sum() > n) // 剪枝1
+            return ;
+        if (result.size() == k && Sum() == n) {
+            ending.push_back(result);
+            return ;
+        }
+        if (result.size() == k) // 个数满足值不满足，直接返回
+            return ;
+        for (int i=start; i<=9-(k-result.size())+1; i++) { // 第二次剪枝
+            result.push_back(i);
+            backtracking(i+1, n, k);
+            result.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        backtracking(1, n, k);
+        return ending;
+    }
+};
