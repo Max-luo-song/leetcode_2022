@@ -1,0 +1,39 @@
+/*
+    算法思想：组合问题是明显的回溯问题。按照回溯的模板
+    void backtracking(参数) {
+        if (终止条件) {
+            存放结果;
+            return ;
+        }
+        for (选择：本层集合中元素) {
+            处理节点；
+            backtracking(路径,选择列表) //递归
+            回溯，撤销处理结果
+        }
+    }
+    本题不重复的组合，每次设置开始节点
+*/
+class Solution {
+public:
+    vector<vector<int>> ending;
+    vector<int> temp;
+    void backtracking(int t, int n, int k) {
+        
+        if (temp.size() == k) {
+            ending.push_back(temp);
+            return;
+        }
+        // 此处可以进行剪枝，开始位置从n-(k-temp.size())+1开始
+        // for (int i=t; i<=n-(k-temp.size())+1)
+        for (int i=t; i<=n; i++) {
+            temp.push_back(i); // 处理节点
+            backtracking(i+1, n, k); // 递归
+            temp.pop_back(); // 撤销操作
+        }
+        return ;
+    }
+    vector<vector<int>> combine(int n, int k) {
+        backtracking(1, n, k);
+        return ending;
+    }
+};
