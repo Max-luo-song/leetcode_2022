@@ -1,0 +1,29 @@
+/*
+    算法思想：本题是不重复的组合，首先确定为回溯解题。但本题数组不是一个数组，是在多个数组中取元素。
+    本题是按照输入的编号对应一个数组，一个字符对应一个数组。对应多个集合求组合
+*/
+class Solution {
+public:
+    const string letterMap[10] = {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    vector<string> result;
+    string s;
+    void backtracking(const string& digits, int index) {
+        if (index == digits.size()) {
+            result.push_back(s);
+            return ;
+        }
+        int digit = digits[index] - '0';
+        string letters = letterMap[digit];
+        for (int i=0; i<letters.size(); i++) {
+            s.push_back(letters[i]);
+            backtracking(digits, index+1);
+            s.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        if (digits.size() == 0)
+            return result;
+        backtracking(digits, 0);
+        return result;
+    }
+};
