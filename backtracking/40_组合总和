@@ -1,0 +1,36 @@
+/*
+    本题组合问题的特点是
+    1.同一个集合中(要用startIndex)
+    2.每个数字使用一次，但集合中有重复数字(要去重，先排序。去重使用used数组，当num[i]==nums[i-1]时，若used[i-1]为false说明需要去充)
+*/
+class Solution {
+public:
+    vector<int> temp;
+    vector<vector<int>> ending;
+    int sum = 0;
+    void backtracking(vector<int>& candidates, int target, int startIndex, vector<bool>& used) {
+        if (sum > target) 
+            return ;
+        if (sum == target) {
+            ending.push_back(temp);
+            return ;
+        }
+        for (int i=startIndex; i<candidates.size(); i++) {
+            if (i>0 && candidates[i] == candidates[i-1] && used[i-1] == false)
+                continue;
+            temp.push_back(candidates[i]);
+            sum += candidates[i];
+            used[i] = true;
+            backtracking(candidates, target, i+1, used);
+            sum -= candidates[i];
+            temp.pop_back();
+            used[i] = false;
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<bool> used(candidates.size(), false);
+        backtracking(candidates, target, 0, used);
+        return ending;
+    }
+};
