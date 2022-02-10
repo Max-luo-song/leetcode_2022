@@ -1,0 +1,36 @@
+/*
+    算法思想：本题是有重复元素的全排列问题，处理方法是全排列+去重
+    使用used数组处理全排列，使用same处理去重
+*/
+class Solution {
+public:
+    vector<vector<int>> ending;
+    vector<int> temp;
+    void backtracking(vector<int> nums, vector<bool> &used, vector<bool> &same) {
+        if (temp.size() == nums.size()) {
+            ending.push_back(temp);
+            return ;
+        }
+        for (int i=0; i<nums.size(); i++) {
+            if (i>0 && nums[i-1] == nums[i] && same[i-1] == false) // 去重
+                continue; 
+            if (used[i] == true) // 全排列保证不重复使用
+                continue;
+        
+            temp.push_back(nums[i]);
+            used[i] = true;
+            same[i] = true;
+            backtracking(nums, used, same);
+            used[i] = false;
+            same[i] = false;
+            temp.pop_back();
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<bool> used(nums.size(), false);
+        vector<bool> same(nums.size(), false);
+        backtracking(nums, used, same);
+        return ending;
+    }
+};
