@@ -1,0 +1,38 @@
+/*
+    算法思想：本题字符串分割问题，特点是分割的是否是回文串
+    回文串的判断是双指针法，两个指针前后移动判断是否相同。
+    字符分割比较复杂使用回溯处理。总体按照回溯模板。
+    分割的方式就是：先分割一段，[startIndex,i]就是要分割的字符串，满足条件就保存
+*/
+class Solution {
+public:
+    vector<vector<string>> ending;
+    vector<string> temp;
+    bool ishuiwen(string s, int begin, int end) {
+        for (int i=begin,j=end; i<=j; i++,j--) {
+            if (s[i] != s[j])
+                return false;
+        }
+        return true;
+    }
+    void backtracking(string s, int startIndex) {
+        if (startIndex >= s.length()) { // 递归中止就是通过切割到最后满足条件就是
+            ending.push_back(temp);
+            return ;
+        }
+        for (int i=startIndex; i<s.length(); i++) {
+            if (ishuiwen(s, startIndex, i)) {
+                string t = s.substr(startIndex, i-startIndex+1);
+                temp.push_back(t);
+            }
+            else
+                continue;
+            backtracking(s, i+1); // 回溯进入下一层
+            temp.pop_back();
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        backtracking(s, 0);
+        return ending;
+    }
+};
