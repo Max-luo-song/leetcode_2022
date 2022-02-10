@@ -1,0 +1,29 @@
+/*
+    算法思想：本题就是回溯模板。和之前在同一个集合中一样，区别在于可以相同，则startIndex改变
+*/
+class Solution {
+public:
+    vector<vector<int>> ending;
+    vector<int> temp;
+    int sum = 0;
+    void backtracking(vector<int>& candidates, int target, int startIndex) {
+        if (sum == target) {
+            ending.push_back(temp);
+            return ;
+        }
+        if (sum > target)
+            return ;
+        // 开始值一定要从startIndex开始否则就会出现重复的情况
+        for (int i=startIndex; i<candidates.size(); i++) {
+            temp.push_back(candidates[i]);
+            sum += candidates[i];
+            backtracking(candidates, target, i); // 至于是否出现重复的元素，就看startIndex在for循环内的情况。如果可以相同是i，不可以相同是i+1
+            temp.pop_back();
+            sum -= candidates[i];
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        backtracking(candidates, target, 0);
+        return ending;
+    }
+};
