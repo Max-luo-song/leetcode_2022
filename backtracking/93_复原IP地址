@@ -1,0 +1,52 @@
+/*
+    算法思想：对切割段数有限制，不能使用切割到最后为条件。本题是四段，只能用四段做中止条件
+    本题属于字符串切割问题，按照回溯算法模板。对于字符串切割问题。要确定终止条件，本题是只能切割成
+    四段。所以不能使用startIndex>=s.length()为中止，只能用切割段数。切割段数由点个数控制。当点个数为3时
+    再检查最后一段，满足条件即可
+*/
+class Solution {
+public:
+    vector<string> ending;
+    bool isValid(string s, int begin, int end) {
+        if (begin > end) // 一定要写否则会出现最后点后无数据情况
+            return false;
+        if (s[begin] == '0' && begin == end)
+            return true;
+        else if (s[begin] == '0' && begin != end)
+            return false;
+        int count = 0;
+        for (int i=begin;i<=end; i++) {
+            count *= 10;
+            count += s[i]-'0';
+            if (count > 255)
+                return false;
+        }
+        if (count > 255)
+            return false;
+        else
+            return true;
+    }
+    void backtracking(string &s, int startIndex, int pointNum) {
+        if (pointNum == 3) {
+            if (isValid(s, startIndex, s.size()-1)) 
+                ending.push_back(s);
+            return ;
+        }
+        for (int i=startIndex; i<s.size(); i++) {
+            if (isValid(s, startIndex, i)) {
+                s.insert(s.begin()+i+1, '.');
+                pointNum++;
+                backtracking(s, i+2, pointNum);
+                pointNum--;
+                s.erase(s.begin()+i+1); 
+            }
+            else {
+                break;
+            }
+        }
+    }
+    vector<string> restoreIpAddresses(string s) {
+        backtracking(s, 0, 0);
+        return ending;
+    }
+};
