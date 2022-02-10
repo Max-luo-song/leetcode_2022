@@ -1,0 +1,23 @@
+/*
+    算法思想：整体按照回溯的模板，对于子集问题几点注意。重复的元素不能再次使用，要从startIndex开始不是0
+    自己要所有可能性，ending的加入没有限制。剩下的就是模板
+*/
+class Solution {
+public:
+    vector<vector<int>> ending;
+    vector<int> temp;
+    void backtracking(vector<int> nums, int startIndex) {
+        ending.push_back(temp); // 需要先push_back再判断是否到达最后。在i+1等于最后时，当时的temp还没加入
+        if (startIndex >= nums.size())
+            return ;
+        for (int i=startIndex; i<nums.size(); i++) {
+            temp.push_back(nums[i]);
+            backtracking(nums, i+1);
+            temp.pop_back();
+        }
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        backtracking(nums, 0);
+        return ending;
+    }
+};
