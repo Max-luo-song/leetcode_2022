@@ -1,0 +1,30 @@
+/*
+    算法思想：对于本题其实是求子集问题。特点是对子集有限制，必须是递增的子序列。
+    而且本题中存在重复元素，说明要去重。对于不可排序的去重不能使用used数组。
+    要使用unordered_set,确保没有和unorder_set中重复
+*/
+
+class Solution {
+public:
+    vector<vector<int>> ending;
+    vector<int> temp;
+    void backtrack(vector<int>& nums, int startIndex) {
+        if (temp.size() >= 2) // 本题要求至少有两个元素
+            ending.push_back(temp);
+        unordered_set<int> s; // 每一层都会定义一个新的unordered_set
+        for (int i=startIndex; i<nums.size(); i++) { // nums[i]<temp.back()保证是递增的情况
+            if ((!temp.empty() && nums[i]<temp.back())|| (s.find(nums[i]) != s.end())) {
+                continue;
+            }
+            temp.push_back(nums[i]);
+            s.insert(nums[i]);
+            backtrack(nums, i+1);
+            temp.pop_back();
+        }
+            
+    }
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        backtrack(nums, 0);
+        return ending;
+    }
+};
