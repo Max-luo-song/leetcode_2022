@@ -1,0 +1,29 @@
+/*
+    算法思想：本题属于子集问题。特点是子集内元素有重复。有重复就需要去重，还是使用used数组方法
+    剩下的还是回溯模板+子集模板
+*/
+class Solution {
+public:
+    vector<vector<int>> ending;
+    vector<int> temp;
+    void backtracking(vector<int> nums, int startIndex, vector<bool>&used) {
+        ending.push_back(temp);
+        if (startIndex >= nums.size())
+            return ;
+        for (int i=startIndex; i<nums.size(); i++) {
+            if (i>0 && nums[i-1] == nums[i] && used[i-1] == false)
+                continue;
+            temp.push_back(nums[i]);
+            used[i] = true;
+            backtracking(nums, i+1, used);
+            used[i] = false;
+            temp.pop_back();
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<bool> used(nums.size(), false);
+        backtracking(nums, 0, used);
+        return ending;
+    }
+};
