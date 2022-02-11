@@ -1,0 +1,48 @@
+/*
+    算法思想：N皇后就是用回溯算法解决。需要注意的是描述棋盘的时候可以直接用字符，不用int处理好最后转换
+    判断是否有效，需要判断列+左右45度交叉线
+
+*/
+class Solution {
+public:
+    vector<vector<string>> ending;
+    int count = 0;
+    bool isValid(int n, vector<string>&tag, int p) { // 当前元素位于tag[row][p]
+        if (count == 0)
+            return true;
+        // 不需要判断行，只需要判断列
+        for (int i=0; i<count; i++) {
+            if (tag[i][p] == 'Q')
+                return false;
+        }
+        // 判断斜线
+        for (int i=0; i<count; i++) {
+            for (int j=0; j<n; j++) {
+                if (tag[i][j] == 'Q' && abs(count-i) == abs(p-j))
+                    return false;
+            }
+        }
+        return true;
+    }
+    void backtracking(int n, vector<string> &tag) {
+        if (count == n) {
+            ending.push_back(tag);
+            return ;
+        }
+        for (int i=0; i<n; i++) { 
+            if (!isValid(n, tag, i))
+                continue;
+            tag[count][i] = 'Q';
+            count++;
+            backtracking(n, tag);
+            count--;
+            tag[count][i] = '.';
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        string s(n, '.'); // .的个数是n
+        vector<string> tag(n, s);
+        backtracking(n, tag);
+        return ending;
+    }
+};
