@@ -20,12 +20,12 @@ void backtracking(参数) {
 1）确定backtracking的参数，应该包括操作数组+其他内容，要注意是否是引用
 2）返回值的确定，大部分是void。但对于从所有可能里选出一个满足条件的要使用bool做返回值
 3）终止条件的确定，一般是题目中某个可以量化的数字要求(总数达到xxx时)
-3.组合问题
+## 3.组合问题
 组合问题分类如下：
-3.1在一个集合中选取元素进行组合(用startIndex)
+####3.1在一个集合中选取元素进行组合(用startIndex)
 	3.1.1集合中没有重复元素
 	3.1.2集合中有重复元素
-3.2在多个集合中选取元素进行组合(不用startIndex)
+####3.2在多个集合中选取元素进行组合(不用startIndex)
 3.1.1 对于没有重复元素，要使用startIndex作为对下一层的介入，而且如果每个元素只能使用一次，下一层要加一进入。
 模板如下(无重复元素+只能使用一次，详见77，216)：
 void backtracking(int startIndex, int 操作数组) {
@@ -62,8 +62,8 @@ void backtracking(int 操作数组nums，int startIndex, vector<bool>& used) {
 	}
 }
 3.2 在多个集合中，区别在于找好映射。整体模板不变，for循环内控制条件还是一层可以选择范围。17中对应的就是每个digits代表的三个元素。要生成新的digits操作的对象。题中letter就是控制对象
-4.字符分割问题
-4.1字符分割成无限份——区别在于终止条件不同
+## 4.字符分割问题
+#### 4.1字符分割成无限份——区别在于终止条件不同
 模板如下(详见131)：
 void backtracking(string s, int startIndex) {
 	// 终止条件：startIndex >= s.length()
@@ -73,7 +73,7 @@ void backtracking(string s, int startIndex) {
 		// 回溯
 	}
 }
-4.2字符分割成固定份数
+#### 4.2字符分割成固定份数
 模板如下(详见93)：
 void backtracking(string s, int startIndex, int 控制分段份数变量) {
 	// 终止条件：分段达到固定份数
@@ -85,8 +85,8 @@ void backtracking(string s, int startIndex, int 控制分段份数变量) {
 		// 回溯
 	}
 }
-5. 子集问题
-5.1 不包含重复元素——区别在于是否需要去重
+## 5. 子集问题
+#### 5.1 不包含重复元素——区别在于是否需要去重
 模板如下(详见78)：
 void backtracking(操作数组，int startIndex) {
 	ending.push_back(temp); // 对于子集问题，全部push_back，相当于无终止条件。除非对个数有要求(491)
@@ -98,7 +98,7 @@ void backtracking(操作数组，int startIndex) {
 		// 回溯
 	}
 }
-5.2 包含重复元素
+#### 5.2 包含重复元素
 5.2.1 可排序，使用used数组去重
 sort(nums.begin(), nums.end());
 模板如下(详见90)：
@@ -134,8 +134,8 @@ void backtracking(操作数组nums，int startIndex) {
 		// 回溯
 	}
 }
-6.排列问题——排列问题不使用startIndex,用used数组标记
-6.1 没有重复数字(详见46)
+## 6.排列问题——排列问题不使用startIndex,用used数组标记
+#### 6.1 没有重复数字(详见46)
 void backtracking(操作数组nums, vector<bool>& used) {
 	返回条件：满足个数
 	for (int i=0; i<nums.size(); i++) { // 排列从0开始
@@ -146,7 +146,7 @@ void backtracking(操作数组nums, vector<bool>& used) {
 		回溯，used[i] = false;
 	}
 }
-6.2 包含重复数字——去重(详见47)
+#### 6.2 包含重复数字——去重(详见47)
 去重数组same+排列中一个元素使用一个数组used
 sort(nums.begin(), nums.end()) // 有去重数组一定要排序
 void backtracking(操作数组nums, vector<bool>& used, vector<bool>& used) {
@@ -161,8 +161,8 @@ void backtracking(操作数组nums, vector<bool>& used, vector<bool>& used) {
 		回溯，used[i] = false; same[i] = false;
 	}
 }
-7. 棋盘问题
-7.1 一维棋盘(详见51)
+## 7. 棋盘问题
+#### 7.1 一维棋盘(详见51)
 void backtracking(int n, 棋盘数组tag, int row) {
 	// 返回条件，一般是横坐标个数
 	for (int i=0; i<n; i++) {
@@ -171,7 +171,7 @@ void backtracking(int n, 棋盘数组tag, int row) {
 		//回溯
 	}
 }
-7.2 二维棋盘(详见37)
+#### 7.2 二维棋盘(详见37)
 参数中不使用row，用一些剪枝操作让ij都从0开始
 void backtracking(int n, 棋盘数组tag) {
 	// 返回条件可以没有
