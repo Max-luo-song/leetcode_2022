@@ -1,0 +1,25 @@
+/*
+    算法思想：本题要求摆动数列，将数组元素抽象为曲线图。摆动数列的个数就是统计转折点的个数。
+            转折点的统计用了curDiff和preDiff,出现符号不同就是转折。=0是为了处理最左最右
+            特殊情况
+*/
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        // 特殊情况处理
+        if (nums.size() == 1)
+            return nums.size();
+        int curDiff = 0; // 当前一对差值
+        int preDiff = 0; // 前一对差值
+        int result = 1; // 默认右侧有一个最高
+        // 此处保持diff=0是为了处理最左最右的情况
+        for (int i=0; i<nums.size()-1; i++) {
+            curDiff = nums[i+1]-nums[i];
+            if ((curDiff>0 && preDiff<=0) || (preDiff>=0 && curDiff<0)) {
+                result++; // 增加的是左侧的峰值
+                preDiff = curDiff;
+            }
+        }
+        return result;
+    }
+};
