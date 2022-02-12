@@ -1,0 +1,65 @@
+/*
+    算法思想：贪心的思路，先排序，让负的尽可能变正。如果K还是偶数输出。否则，全正后寻找最小的，取反输出
+             改进：排序方法改进，使用绝对值排序(从大到小)。这样最小的在末尾，全正时直接拿
+*/
+class Solution {
+public:
+    int sum(vector<int> nums) {
+        int count = 0;
+        for (int i=0; i<nums.size(); i++) {
+            count += nums[i];
+        }
+        return count;
+    }
+    bool Zero(vector<int> nums) {
+        for (int i=0; i<nums.size(); i++) {
+            if (nums[i] == 0)
+                return true;
+        }
+        return false;
+    }
+    int Small(vector<int> nums) {
+        int small_one = nums[0];
+        int small = 0;
+        for (int i=1; i<nums.size(); i++) {
+            if (nums[i] < small_one) {
+                small = i;
+                small_one = nums[i];
+            }
+        }
+        return small;
+    }
+    int largestSumAfterKNegations(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        int i;
+        for (i=nums.size()-1; i>=0; i--) {
+            if (nums[i] < 0)
+                break;
+        }
+        if (i == -1) { // 全是正的
+            if (k%2 == 1)
+                nums[0] = -nums[0];
+            return sum(nums);
+        }
+        else { // 存在负的
+            int t = 0;
+            while(k>0 && t<=i) {
+                nums[t] = -nums[t];
+                t++;
+                k--;
+            }
+            if (k == 0)
+                return sum(nums);
+            else {
+
+                if (k%2 == 1 && !Zero(nums)) {
+                    int small = Small(nums);
+                    nums[small] = -nums[small];
+                }
+                    
+                return sum(nums);
+            }
+        }
+        return 0;
+    }
+};
