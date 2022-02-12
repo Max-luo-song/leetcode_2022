@@ -1,0 +1,17 @@
+/*
+    算法思想：本题使用贪心算法，看每步最远的覆盖范围。如果覆盖范围超过最终节点就会
+*/
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int cover = 0;
+        if (nums.size() == 1)
+            return true;
+        for (int i=0; i<=cover; i++) { // 这里必须是cover，不一定能跳到最后。用nums.size()就是一定能跳到最后了
+            cover = max(i+nums[i], cover);
+            if (cover >= nums.size()-1)
+                return true;
+        }
+        return false;
+    }
+};
