@@ -1,0 +1,23 @@
+/*
+    算法思想：贪心算法，始终拿最大的饼干去看能不能满足孩子。如果能满足当前的孩子就+1，不能满足当前的孩子就去寻找前面更小的还是看是否能满足。局部最优就是大饼干给胃口大的，全局最优是喂饱尽可能多的小孩
+*/
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        // 一定要排序
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        int count = 0;
+        for (int i=g.size()-1,j=s.size()-1; i>=0 && j>=0;) {
+            if (s[j] >= g[i]) {
+                count++;
+                i--;
+                j--;
+            }
+            else {
+                i--; // 寻找更小的孩子
+            }
+        }
+        return count;
+    }
+};
