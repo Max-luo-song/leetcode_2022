@@ -1,0 +1,35 @@
+/*
+    算法思想：动态规划方法，temp中代表是当前位置最大的连续子数列和。不能是max(temp[i-1]+nums[i],temp[i-1])。这样不是连续。必须要用一个max_one存储
+*/
+/*
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        vector<int> temp(nums.size(), INT_MIN);
+        int max_one = nums[0];
+        temp[0] = nums[0];
+        for (int i=1; i<nums.size(); i++) {
+            temp[i] = max(nums[i], temp[i-1]+nums[i]); // 注意动态规划中的选取(max(过去加现在，现在))
+            max_one = max(max_one, temp[i]); // 
+        }
+        return max_one;
+    }
+};*/
+/*
+    算法思想2：使用贪心思想，当前缀小于0时，开始节点就从后面开始。及时归0，保证后面
+*/
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int result = INT_MIN;
+        int count = 0;
+        for (int i=0; i<nums.size(); i++) {
+            count += nums[i];
+            if (count > result)
+                result = count;
+            if (count < 0)
+                count = 0;
+        }
+        return result;
+    }
+};
