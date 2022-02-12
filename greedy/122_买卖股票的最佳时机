@@ -1,0 +1,20 @@
+/*
+    算法思想：本题思路是在某一日低价买入，再某一日高价卖出。最小周期为两天
+    第0日买，第2日卖。可分解为prices[2]-prices[0] 实际等于prices[2]-prices[1] + prices[1]-prices[0]
+    变成相邻的情况，计算每一天的利润，因为可以控制是否卖，选择正利润即可
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        vector<int> money(prices.size()-1, 0);
+        for (int i=1; i<prices.size(); i++) {
+            money[i-1] = prices[i]-prices[i-1];
+        }
+        int count = 0;
+        for (int i=0; i<money.size(); i++) {
+            if (money[i] > 0)
+                count += money[i];
+        }
+        return count;
+    }
+};
