@@ -1,0 +1,49 @@
+/*
+    算法思想：暴力算法，会超时
+*/
+/*
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        for (int i=0; i<gas.size(); i++) {
+            int rest = gas[i]-cost[i];
+            int index = (i+1)%cost.size();
+            while (rest > 0 && index != i) {
+                rest += gas[index]-cost[index];
+                index = (index+1)%cost.size();
+            }
+            if (rest>=0 && index == i)
+                return i;
+        }
+        return -1;
+    }
+};*/
+/*
+    算法思想：本题存在3种情况：
+    1.油量总和小于消耗的，一定到达不了
+    2.每段剩余的都>=0,说明没有断油，从0开始就行
+    3.有段剩余出现负数，说明0不行。从后往前看哪段剩余的能抹平这个负数，就行
+*/
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int curSum = 0;
+        int min = INT_MAX;
+        for (int i=0; i<gas.size(); i++) {
+            curSum += gas[i]-cost[i];
+            if (curSum < min) // 最小值指的是过程中当前油量的最小值。不是每个加油用油过程的最小值
+                min = curSum;
+        }
+        if (curSum < 0) // 情况1
+            return -1;
+        if (min >= 0) // 情况2
+            return 0;
+        // 情况3
+        for (int i=gas.size()-1; i>=0; i--) {
+            min += gas[i]-cost[i]; // 持续增加，可能一个补不回来
+            if (min >= 0)
+                return i;
+        }
+        return -1;
+    }
+};
