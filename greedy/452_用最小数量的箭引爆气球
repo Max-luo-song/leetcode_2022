@@ -1,0 +1,25 @@
+/*
+    算法思想：本题思想简单，但实际模拟困难。首先按照左边界排序，寻找有重叠部分增加min_num。
+             使用左右关系判断复杂，选用重叠气球的最小右边界，只有左边的右，和右边的左不挨着才增加箭
+             更新当前最小右是在当前右和之前右选个小的
+*/
+class Solution {
+public:
+    static bool cmp(const vector<int>& a, const vector<int>& b) {
+        if (a[0] == b[0])
+            return a[1] < b[1];
+        return a[0] < b[0];
+    }
+    int findMinArrowShots(vector<vector<int>>& points) {
+        int min_num = 1;
+        sort(points.begin(), points.end(), cmp);
+        for (int i=1; i<points.size(); i++) {
+            if (points[i][0] > points[i-1][1]) // 不挨着，需要一支
+                min_num++;
+            else {
+                points[i][1] = min(points[i-1][1], points[i][1]); // 更新重叠气球最小右边界
+            }
+        }
+        return min_num;
+    }
+};
