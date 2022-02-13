@@ -1,0 +1,23 @@
+/*
+    算法思想：本题有两个维度(1.身高 2.序号).对于两个维度的选一个维度确定后再对另一个维度做处理。
+    本题选择维度，对于序号排序后，身高是乱序的无意义。所以对身高排序。按照从大到小排序。从大到小的原因
+    是说前面的身高都比自己高。对于身高相同的，序号在前的优先。再依次做插入
+*/
+class Solution {
+public:
+    // 这个cmp的代表是按照a[0]从大到小排序，如果a[0]相同，让a[1]小的(排序的序号在前面)在前面
+    static bool cmp(const vector<int>& a, const vector<int>& b) {
+        if (a[0] == b[0])
+            return a[1] < b[1];
+        return a[0]>b[0];
+    }
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        sort(people.begin(), people.end(), cmp); // 注意sort的使用格式 
+        vector<vector<int>> ending;
+        for (int i=0; i<people.size(); i++) {
+            int position = people[i][1];
+            ending.insert(ending.begin()+position, people[i]);
+        }
+        return ending;
+    }
+};
