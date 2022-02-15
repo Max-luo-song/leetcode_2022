@@ -1,0 +1,49 @@
+/*
+    算法思想1：暴力算法，超时
+*/
+/*
+class Solution {
+public:
+    bool Judge(int n) {
+        int temp = n%10;
+        while (n > 0) {
+            n = n/10;
+            int t = n%10;
+            if (t > temp)
+                return false;
+            temp = t;
+        }
+        return true;
+    }
+    int monotoneIncreasingDigits(int n) {
+        if (n>=0 && n<=9)
+            return n;
+        for (int i=n; i>=0; i--) {
+            if (Judge(i))
+                return i;
+        }
+        return 0;
+    }
+};*/
+/*
+    算法思想2：按照递增数列的定义，如果出现非递增情况。让num[i-1]减1，nums[i]变9。就是满足条件的最大数
+    关注点：变9，应该是后面的全部变9
+    转化点：int不好处理，换成string进行处理，最后再变回来
+*/
+class Solution {
+public:
+    int monotoneIncreasingDigits(int n) {
+        string s = to_string(n);
+        int flag;
+        for (int i=s.length()-1; i>0; i--) {
+            if (s[i-1] > s[i]) {
+                s[i-1]--;
+                flag = i;
+            }
+        }
+        for (int i=flag; i<s.length(); i++) {
+            s[i] = '9';
+        }
+        return stoi(s); // string转int
+    }
+};
