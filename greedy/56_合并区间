@@ -1,0 +1,30 @@
+/*
+    算法思想：按照区间重叠类题目的思想，本题是先左排序，再从左向右遍历。
+    碰到有区间重叠就合并，因为可能多次合并，所以for循环内一个while做判断
+    对于最后一个要特殊处理，如果最后一个被合并了没事。没有合并要单独加入
+*/
+class Solution {
+public:
+    static bool cmp(const vector<int>& a, const vector<int>& b) {
+        return a[0] < b[0];
+    }
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(),intervals.end(), cmp);
+        bool tag = false; // 用于判断最后一个是否合并过
+        vector<vector<int>> ending;
+        for (int i=1; i<intervals.size(); i++) {
+            int left = intervals[i-1][0]; // 都是上一个
+            int right = intervals[i-1][1];
+            while (i < intervals.size() && right >= intervals[i][0]) {
+                right = max(right, intervals[i][1]);
+                if (i ==  intervals.size()-1) // 最后一个合并了
+                    tag = true;
+                i++;
+            }
+            ending.push_back(vector<int>{left,right});
+        }
+        if (tag == false)
+            ending.push_back(vector<int>{intervals[intervals.size()-1][0],intervals[intervals.size()-1][1]});
+        return ending;
+    }
+};
