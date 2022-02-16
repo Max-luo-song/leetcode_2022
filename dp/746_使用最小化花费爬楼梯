@@ -1,0 +1,14 @@
+// 算法思想：当前状态由前1个或是前两个已经花费的加上消耗综合的较小决定的。
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int dp[cost.size()+1];
+        // 初始化
+        dp[0] = 0;
+        dp[1] = 0;
+        for (int i=2; i<=cost.size(); i++) {
+            dp[i] = min(dp[i-1]+cost[i-1],dp[i-2]+cost[i-2]); // 状态转移方程，认为爬上本层需要的是前面的
+        }
+        return dp[cost.size()];
+    }
+};
