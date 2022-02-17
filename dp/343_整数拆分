@@ -1,0 +1,16 @@
+/* 算法思想：动态规划，设定dp[i]为最大正整数i的最大乘积。dp[i] = dp[j]*dp[i-j]——代表拆分至少两个数
+    本题有i,j就是从两个维度，表明两重for循环。dp[i]的确认由三部分组成：dp[i]，j*(i-j)-代表拆分两个数, j*dp[i-j]-代表拆分至少两个数
+*/
+class Solution {
+public:
+    int integerBreak(int n) {
+        vector<int> dp(n + 1); // int默认不过
+        dp[2] = 1; // 初始化原因：n从2开始
+        for (int i=3; i<=n; i++) { // 从2初始化,i从3开始
+            for (int j=2; j<i; j++) { // j的初始化从2开始，到i-1
+                dp[i] = max(dp[i],max(j*(i-j),j*dp[i-j]));
+            }
+        }
+        return dp[n];
+    }
+};
