@@ -4,6 +4,7 @@
     dp[3] = dp[2] * dp[0] + dp[1] * dp[1] + dp[0] * dp[2]
     所以dp[n]代表就是所有索引和为n-1的乘积之和
     因为子树为空就是dp[0]要从dp[0]开始赋值
+    dp[i] += dp[j - 1] * dp[i - j]; ，j-1 为j为头结点左子树节点数量，i-j 为以j为头结点右子树节点数量
 */
 class Solution {
 public:
