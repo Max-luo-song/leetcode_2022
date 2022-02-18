@@ -1,0 +1,34 @@
+/*
+    算法思想：本题回溯可以做，动态规划也可以做。选+或者选-，是01背包问题。用数学计算转化
+    本题left-right = target
+        left+right = sum
+        2*left = sum+target
+        left = (sum+target)/2
+        就是看能否组成left
+        回溯的思想就是看left的存在，按照模板统计下所有和为left的个数
+        01背包对于本题要统计的是容量为left的有几种方法，状态转移方程要换掉
+        填满容量为j - nums[i]的背包，有dp[j - nums[i]]种方法，有nums[i]凑成dp[j]就有dp[j - nums[i]] 种方法      对于求几种方法类的都是：dp[j] += dp[j - nums[i]]
+        遍历顺序还是按照模板从右往左，初始化只初始化dp[0]=1
+*/
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum = 0;
+        for (int i=0; i<nums.size(); i++) {
+            sum += nums[i];
+        }
+        if (abs(target) > sum)
+            return 0;
+        if ((sum+target) % 2 == 1)
+            return 0;
+        int left = (sum+target) / 2;
+        vector<int> dp(left+1, 0);
+        dp[0] = 1;
+        for (int i=0; i<nums.size(); i++) {
+            for (int j=left; j>=nums[i]; j--) {
+                dp[j] += dp[j-nums[i]];
+            }
+        }
+        return dp[left];
+    }
+};
