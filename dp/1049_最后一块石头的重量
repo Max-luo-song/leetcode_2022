@@ -1,0 +1,21 @@
+/*
+    算法思想：要想让剩下的石头最小，相当于把整体的石头分成重量接近的两堆(思想关键) 
+    让背包大小为sum/2，看sum/2最大能装多少。价值和重量相同，最后拿总重量-2被target最大重量绝对值即可
+*/
+class Solution {
+public:
+    int lastStoneWeightII(vector<int>& stones) {
+        int sum = 0;
+        for (int i=0; i<stones.size(); i++) {
+            sum += stones[i];
+        }
+        int target = sum / 2;
+        vector<int> dp(target+1, 0);
+        for (int i=0; i<stones.size(); i++) {
+            for (int j=target; j>=stones[i]; j--) {
+                dp[j] = max(dp[j], dp[j-stones[i]]+stones[i]);
+            }
+        }
+        return abs(sum-2*dp[target]);
+    }
+};
