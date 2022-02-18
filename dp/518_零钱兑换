@@ -1,0 +1,28 @@
+/*
+    算法思想：本题有一个固定值，同时任选个数，判断类型为完全背包问题
+    按照完全背包问题的模板，本题背包大小是amoubt。
+    而且是求组合个数，状态转移方程是dp[j] += dp[j-coins[i]];
+    如果求组合数就是外层for循环遍历物品，内层for遍历背包。
+    如果求排列数就是外层for遍历背包，内层for循环遍历物品
+    排列数就是
+    for (int j=0; j<=amount; j++) {
+        for (int i=0; i<coins.size(); i++) {
+            if (j-coins[i] >= 0) {
+                dp[j] += dp[j-coins[i]];
+            }
+        }
+    }
+*/
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        vector<int> dp(amount+1, 0);
+        dp[0] = 1; // 一定要初始化
+        for (int i=0; i<coins.size(); i++) {
+            for (int j=coins[i]; j<= amount; j++) { // 从小到大
+                dp[j] += dp[j-coins[i]];
+            }
+        }
+        return dp[amount];
+    }
+};
