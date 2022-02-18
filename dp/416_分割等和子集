@@ -1,0 +1,28 @@
+/*
+    算法思想：可以用回溯方法，但是会超时。用动态规划
+    元素可选可不选，是01背包问题。数组分割成两个子集，令背包大小为sum/2。看物品能否装满背包
+    判断是否装满背包就看dp[i]和dp[i-1]值是否相同就行
+*/
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for (int i=0; i<nums.size(); i++) {
+            sum += nums[i];
+        }
+        if (sum % 2 == 1)
+            return false;
+        sum = sum / 2;
+        // 01背包固定模板
+        vector<int> dp(sum+1, 0);
+        for (int i=0; i<nums.size(); i++) {
+            for (int j=sum; j>=nums[i]; j--) {
+                dp[j] = max(dp[j],dp[j-nums[i]]+nums[i]);
+            }
+        }
+        if (dp[sum] != sum) // 让价值和重量相等，当价值为sum时说明重量也为sum。即代表背包装满
+            return false;
+        else
+            return true;
+    }
+};
