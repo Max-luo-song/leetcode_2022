@@ -1,0 +1,22 @@
+/*
+    算法思想：本题需要注意dp的下标含义dp[i]代表长度为i是否能够由字符串列表拼接出。类型为bool
+             状态转移式的思想为dp[j]如果在，且dp[i-j]在列表中说明dp[i]也在
+             初始化dp[0]就行
+             按照排列的方法写，dp[i-j]用substr求，再用FIND寻找，要转化成unordered_set
+*/
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+        vector<bool> dp(s.size()+1, false);
+        dp[0] = true;
+        for (int i=1; i<=s.length(); i++) {
+            for (int j=0; i-j>0; j++) {
+                string word = s.substr(j, i-j);// substr(起始位置，截取个数)
+                if (wordSet.find(word) != wordSet.end() && dp[j])
+                    dp[i] = true;
+            }
+        }
+        return dp[s.size()];
+    }
+};
