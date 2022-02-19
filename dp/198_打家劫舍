@@ -1,0 +1,20 @@
+/*
+    算法思想：本题分析出是dp问题，重点在状态转移方程的确定
+    dp[i]的含义是0-i的范围，现金的最大数。对于dp[i]是否考虑dp[i-1]
+    从dp[i-2]+nums[i], dp[i-1]选大的决定dp[i]
+    本题还有是对于是否偷过的标记，其实是不需要的，dp代表的就是到达该房间号的最大钱数。与偷不偷没关系
+*/
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.size() == 1)
+            return nums[0];
+        vector<int> dp(nums.size(), 0);
+        dp[0] = nums[0];
+        dp[1] = max(nums[0],nums[1]);
+        for (int i=2; i<nums.size(); i++) {
+            dp[i] = max(dp[i-2]+nums[i], dp[i-1]);
+        }
+        return dp[nums.size()-1];
+    }
+};
