@@ -1,0 +1,20 @@
+/*
+    算法思想：本题的目标是n，每次可以选择的是1和2。相当于多重背包问题。
+    而且先1后2和先2后1是两种方法，按照排列的模板完成即可
+*/
+class Solution {
+public:
+    int climbStairs(int n) {
+        vector<int> nums = {1, 2};
+        vector<int> dp(n+1, 0);
+        dp[0] = 1;
+        for (int j=0; j<=n; j++) {
+            for (int i=0; i<nums.size(); i++) {
+                if (j-nums[i] >= 0) {
+                    dp[j] += dp[j-nums[i]];
+                }
+            }
+        }
+        return dp[n];
+    }
+};
