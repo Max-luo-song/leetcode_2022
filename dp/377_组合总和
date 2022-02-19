@@ -1,0 +1,26 @@
+/*
+    算法思想：本题属于排列题目，对于排列题目，输出排列序列要按照回溯完成，求排列总个数用dp
+              可以用可以不用是背包问题，本题可以多次使用。是多重背包问题。按照多重背包模板
+              dp[0] = 1;
+              for (int j=0; j<=target; j++) {
+                  for (int i=0; i<nums.size(); i++) {
+                      if (j-num[i]>=0)
+                        dp[j] += dp[j-nums[i]];
+                  }
+              }
+*/
+class Solution {
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        vector<long long int> dp(target+1, 0);
+        dp[0] = 1;
+        for (int j=0; j<=target; j++) {
+            for (int i=0; i<nums.size(); i++) {
+                if (j-nums[i] >= 0 && dp[j] < INT_MAX - dp[j - nums[i]]) { // 会超大小，所以要限制
+                    dp[j] += dp[j-nums[i]];
+                }
+            }
+        }
+        return dp[target];
+    }
+};
