@@ -1,0 +1,21 @@
+/*
+    算法思想：本题看出是一道多重背包问题，背包大小是amount，可选物品是coins。求最小硬币数，状态转移公式就是
+        dp[j] = min(dp[j],dp[j-nums[i]]+1)
+*/
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount+1, INT_MAX);
+        dp[0] = 0; // 初始化，可解释
+        for (int i=0; i<coins.size(); i++) {
+            for (int j=coins[i]; j<=amount; j++) {
+                if (dp[j-coins[i]] != INT_MAX) // 这里必须要做判断，只有上一个有意义，这里才能+1
+                    dp[j] = min(dp[j],dp[j-coins[i]]+1);
+            }
+        }
+        if (dp[amount] == INT_MAX)
+            return -1;
+        else
+            return dp[amount];
+    }
+};
