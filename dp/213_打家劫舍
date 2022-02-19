@@ -1,0 +1,32 @@
+/*
+    算法思想：本题成环，如果按照环的逻辑分的话，比较复杂。整体包含三种情况：
+    1.首尾不考虑
+    2.考虑首，不考虑尾
+    3.考虑尾，不考虑首
+    所以分开来看，对于2.3来说，单独就是普通的打家劫舍，都计算选大的就可以
+*/
+class Solution {
+public:
+    int Cal(vector<int> &nums, int begin, int end) {
+        if (begin == end)
+            return nums[begin];
+        else if (end - begin  == 1)
+            return max(nums[begin], nums[end]);
+        vector<int> dp(nums.size(), 0);
+        dp[begin] = nums[begin];
+        dp[begin+1] = max(nums[begin], nums[begin+1]);
+        for (int i=begin+2; i<=end; i++) {
+            dp[i] = max(dp[i-2]+nums[i], dp[i-1]);
+        }
+        return dp[end];
+    }
+    int rob(vector<int>& nums) {
+        if (nums.size() == 1)
+            return nums[0];
+        else if (nums.size() == 2)
+            return max(nums[0], nums[1]);
+        int result1 = Cal(nums, 0, nums.size()-2); // 考虑首不考虑尾
+        int result2 = Cal(nums,1, nums.size()-1); // 考虑尾不考虑首
+        return max(result1, result2);
+    }
+};
