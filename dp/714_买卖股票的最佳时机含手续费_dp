@@ -1,0 +1,37 @@
+/*
+    算法思想：与之前的相比，有手续费的情况存在利润不足手续费的情况。所以寻找最低价格，最高价格的日子就行。对于最高价格不用具体找到，只要保证当前有利润就可以进行结果累加。
+*/
+/*class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        int ending = 0;
+        int min = prices[0];
+        for (int i=1; i<prices.size(); i++) {
+            if (prices[i] < min) // 相当于买入
+                min = prices[i];
+            else if (prices[i]>=min && prices[i]<=min+fee) // 没有操作
+                continue;
+            else { // 收获利润，可能卖也可能没卖。但有利润
+                ending += prices[i]-min-fee;
+                min = prices[i] - fee; // 模拟当天卖当天买
+            }
+        }
+        return ending;
+    }
+};*/
+/*
+    算法思想：动态规划
+    状态：1.买入(带手续费)——持有股票 2.卖出——不持有股票
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        vector<vector<int>> dp(prices.size(), vector<int>(2, 0));
+        dp[0][0] = -prices[0]-fee;
+        for (int i=1; i<prices.size(); i++) {
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1]-prices[i]-fee);
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0]+prices[i]);
+        }
+        return dp[prices.size()-1][1];
+    }
+};
