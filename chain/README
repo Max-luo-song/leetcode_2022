@@ -2,7 +2,7 @@
 struct ListNode {
 	int val;
 	ListNode *next;
-	ListNode(int x): val(x),next(NULL);
+	ListNode(int x): val(x),next(NULL){}
 };
 2.在写C++删除链表节点的时候，要有手动释放内存的习惯，用delete
 3.对于删除链表节点的问题，要使用虚拟头节点，防止删除开头元素还要特殊处理的情况，详见203
